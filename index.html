@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Norden-Mc | GENESIS OMNI-EXTREME EDITION</title>
+    <title>Norden-Mc | GENESIS OMNI-EXTREME MAXIMAL</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <style>
         /* ========================================================
@@ -55,10 +55,10 @@
 
         @keyframes glitch_skew_active {
             0% { transform: skew(0deg); filter: hue-rotate(0deg); }
-            10% { transform: skew(3deg); filter: hue-rotate(90deg); }
-            20% { transform: skew(-3deg); }
+            10% { transform: skew(3deg); filter: hue-rotate(90deg); text-shadow: 2px 0 red, -2px 0 blue; }
+            20% { transform: skew(-3deg); text-shadow: -2px 0 red, 2px 0 blue; }
             30% { transform: skew(1deg); }
-            40% { transform: skew(0deg); filter: hue-rotate(0deg); }
+            40% { transform: skew(0deg); filter: hue-rotate(0deg); text-shadow: 0 0 0 transparent; }
             100% { transform: skew(0deg); }
         }
 
@@ -68,8 +68,14 @@
             100% { transform: translateY(0px); }
         }
 
+        @keyframes orb_pulse_core {
+            0% { transform: scale(0.95); box-shadow: 0 0 20px var(--main-cyan), inset 0 0 20px var(--main-cyan); }
+            50% { transform: scale(1.05); box-shadow: 0 0 50px var(--main-cyan), inset 0 0 40px var(--main-cyan); }
+            100% { transform: scale(0.95); box-shadow: 0 0 20px var(--main-cyan), inset 0 0 20px var(--main-cyan); }
+        }
+
         /* ========================================================
-           CORE UI LAYOUT
+           CORE UI LAYOUT & POST-PROCESSING
            ======================================================== 
         */
         * {
@@ -92,19 +98,19 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: radial-gradient(circle, transparent 30%, rgba(0,0,0,0.9) 120%);
+            background: radial-gradient(circle, transparent 20%, rgba(0,0,0,0.95) 150%);
             pointer-events: none;
             z-index: 9998;
         }
 
         .global-scanner {
             position: fixed;
-            left: 0; width: 100%; height: 4px;
+            left: 0; width: 100%; height: 5px;
             background: var(--main-cyan);
-            box-shadow: 0 0 20px var(--main-cyan);
+            box-shadow: 0 0 30px var(--main-cyan);
             opacity: 0.15;
             z-index: 9999;
-            animation: scanline_motion 10s linear infinite;
+            animation: scanline_motion 12s linear infinite;
         }
 
         #genesis-canvas {
@@ -120,7 +126,7 @@
         */
         .nexus-navbar {
             background: rgba(0,0,0,0.98) !important;
-            backdrop-filter: blur(25px);
+            backdrop-filter: blur(30px);
             border-bottom: var(--border-width) solid var(--main-cyan);
             padding: 25px 0;
             z-index: 10000;
@@ -137,7 +143,7 @@
 
         .nexus-brand span {
             color: var(--main-cyan);
-            text-shadow: 0 0 15px var(--main-cyan);
+            text-shadow: 0 0 20px var(--main-cyan);
         }
 
         .nexus-nav-links {
@@ -164,9 +170,11 @@
             width: 0%; height: 2px;
             background: var(--main-cyan);
             transition: 0.4s;
+            box-shadow: 0 0 10px var(--main-cyan);
         }
 
         .nexus-link:hover::after { width: 100%; }
+        .nexus-link:hover { color: var(--main-cyan) !important; text-shadow: 0 0 15px var(--main-cyan); }
 
         /* ========================================================
            HERO CORE ENGINE
@@ -180,11 +188,12 @@
             align-items: center;
             position: relative;
             text-align: center;
+            z-index: 10;
         }
 
         .hero-title-main {
             font-family: var(--font-header);
-            font-size: clamp(3rem, 15vw, 10rem);
+            font-size: clamp(3.5rem, 15vw, 11rem);
             margin: 0;
             line-height: 0.8;
             letter-spacing: -12px;
@@ -193,114 +202,153 @@
 
         .hero-title-main span {
             color: var(--main-cyan);
-            filter: drop-shadow(0 0 30px var(--main-cyan));
-            animation: glitch_skew_active 6s infinite;
+            filter: drop-shadow(0 0 35px var(--main-cyan));
+            animation: glitch_skew_active 7s infinite;
+            display: inline-block;
         }
 
         .server-status-pill {
-            margin-top: 40px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(0, 229, 255, 0.2);
-            padding: 15px 50px;
+            margin-top: 50px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            padding: 18px 60px;
             border-radius: 100px;
             font-family: 'Orbitron';
-            letter-spacing: 6px;
-            font-size: 1rem;
+            letter-spacing: 8px;
+            font-size: 1.1rem;
             color: var(--main-cyan);
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
+            box-shadow: inset 0 0 20px rgba(0, 229, 255, 0.05);
+            backdrop-filter: blur(10px);
         }
 
         .status-dot {
-            width: 12px; height: 12px;
+            width: 14px; height: 14px;
             background: #00ff00;
             border-radius: 50%;
-            box-shadow: 0 0 15px #00ff00;
+            box-shadow: 0 0 20px #00ff00;
         }
 
         .ip-gate {
-            margin-top: 60px;
-            background: rgba(0,0,0,0.9);
+            margin-top: 70px;
+            background: rgba(0,0,0,0.95);
             border: 3px solid var(--main-cyan);
-            padding: 30px 120px;
+            padding: 35px 140px;
             font-family: 'Orbitron';
             font-weight: 900;
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             color: #fff;
             clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
+
+        .ip-gate::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .ip-gate:hover::after { left: 150%; }
 
         .ip-gate:hover {
             background: var(--main-cyan);
             color: #000;
-            box-shadow: 0 0 50px var(--main-cyan);
-            transform: scale(1.05) translateY(-5px);
+            box-shadow: 0 0 60px var(--main-cyan);
+            transform: scale(1.08) translateY(-8px);
         }
 
         /* ========================================================
-           RATINGS: NETWORK INTEGRITY (EXPANDED MANUALLY)
+           NEW SECTION: SYSTEM DIRECTIVES (RULES)
            ======================================================== 
         */
         .section-header-nexus {
             font-family: var(--font-header);
-            font-size: 3.5rem;
+            font-size: 4rem;
             text-align: center;
             letter-spacing: 25px;
             color: var(--main-cyan);
-            margin: 180px 0 100px;
+            margin: 200px 0 120px;
             text-transform: uppercase;
-            text-shadow: 0 0 20px var(--main-cyan);
+            text-shadow: 0 0 25px var(--main-cyan);
+            position: relative;
         }
 
-        .integrity-container {
+        .section-header-nexus::after {
+            content: '';
+            position: absolute;
+            bottom: -30px; left: 50%;
+            transform: translateX(-50%);
+            width: 150px; height: 4px;
+            background: var(--main-cyan);
+            box-shadow: 0 0 15px var(--main-cyan);
+        }
+
+        .directive-card {
             background: var(--card-overlay);
-            border: 1px solid rgba(255,255,255,0.05);
-            padding: 60px;
-            border-radius: 20px;
+            border-left: 5px solid var(--main-cyan);
+            padding: 50px 40px;
             height: 100%;
             backdrop-filter: blur(15px);
+            position: relative;
+            overflow: hidden;
         }
 
-        .rating-entry {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 25px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+        .directive-card:hover {
+            background: rgba(0, 229, 255, 0.05);
+            transform: translateX(10px);
+            box-shadow: 0 0 30px rgba(0, 229, 255, 0.2);
         }
 
-        .user-identity {
-            display: flex;
-            align-items: center;
-            gap: 20px;
+        .directive-num {
+            position: absolute;
+            top: 20px; right: 20px;
+            font-family: var(--font-header);
+            font-size: 5rem;
+            color: rgba(255,255,255,0.05);
+            line-height: 1;
         }
 
-        .user-avatar-hex {
-            width: 50px; height: 50px;
-            background: #000;
-            border: 2px solid var(--main-cyan);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .directive-title {
             font-family: 'Orbitron';
             font-weight: 900;
-            color: var(--main-cyan);
-            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
         }
 
-        .user-name-tag {
-            font-weight: 700;
-            letter-spacing: 2px;
-            font-size: 1.1rem;
+        .directive-desc {
+            font-size: 1rem;
+            opacity: 0.7;
+            line-height: 1.8;
+            font-family: 'Rajdhani';
+            font-weight: 500;
         }
 
-        .star-rating-block {
-            color: #ffcc00;
-            font-size: 1.2rem;
-            letter-spacing: 5px;
-            text-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
+        /* ========================================================
+           VOTE PORTALS
+           ======================================================== 
+        */
+        .vote-card {
+            background: var(--card-overlay);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 60px 40px;
+            text-align: center;
+            height: 100%;
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+        }
+
+        .vote-card:hover {
+            border-color: var(--accent-purple);
+            transform: translateY(-15px);
+            box-shadow: 0 0 40px var(--accent-purple);
         }
 
         /* ========================================================
@@ -320,33 +368,35 @@
 
         .depot-card:hover {
             border-color: var(--main-cyan);
-            transform: translateY(-15px);
-            box-shadow: 0 0 40px var(--main-cyan);
+            transform: translateY(-20px) scale(1.02);
+            box-shadow: 0 0 50px rgba(0, 229, 255, 0.3);
+            background: rgba(0, 229, 255, 0.03);
         }
 
         .promo-tag {
             position: absolute;
-            top: 25px; right: -35px;
+            top: 30px; right: -40px;
             background: var(--main-cyan);
             color: #000;
-            padding: 5px 40px;
+            padding: 5px 45px;
             font-family: 'Orbitron';
             font-weight: 900;
-            font-size: 0.7rem;
+            font-size: 0.8rem;
             transform: rotate(45deg);
+            box-shadow: 0 0 15px var(--main-cyan);
         }
 
         .card-category-label {
             font-family: 'Orbitron';
-            font-size: 0.8rem;
-            letter-spacing: 5px;
+            font-size: 1rem;
+            letter-spacing: 6px;
             color: var(--main-cyan);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             display: block;
         }
 
         .price-display-core {
-            margin: 30px 0;
+            margin: 35px 0;
             font-family: 'Orbitron';
         }
 
@@ -354,81 +404,179 @@
             display: block;
             text-decoration: line-through;
             color: #ff3e3e;
-            font-size: 1.1rem;
-            opacity: 0.6;
+            font-size: 1.2rem;
+            opacity: 0.7;
         }
 
         .new-price-bold {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 900;
             color: #fff;
+            text-shadow: 0 0 20px rgba(255,255,255,0.2);
         }
 
         .new-price-bold small {
-            font-size: 1rem;
+            font-size: 1.2rem;
             color: var(--main-cyan);
+            margin-left: 5px;
         }
 
         .action-button-nexus {
             width: 100%;
-            background: var(--main-cyan);
+            background: linear-gradient(90deg, var(--main-cyan), #fff, var(--main-cyan));
+            background-size: 200% auto;
             color: #000;
             border: none;
-            padding: 20px;
+            padding: 22px;
             font-family: 'Orbitron';
             font-weight: 900;
-            letter-spacing: 4px;
+            letter-spacing: 5px;
             text-transform: uppercase;
-            margin-top: 20px;
+            margin-top: 25px;
+            clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);
         }
 
         .action-button-nexus:hover {
-            background: #fff;
-            letter-spacing: 8px;
+            background-position: right center;
+            letter-spacing: 10px;
+            box-shadow: 0 0 30px var(--main-cyan);
         }
 
         /* ========================================================
-           TERMINAL INTERFACE (GENESIS OS)
+           NEW SECTION: GLOBAL ALLIANCES
+           ======================================================== 
+        */
+        .alliance-box {
+            background: rgba(0,0,0,0.6);
+            border: 2px dashed rgba(255,255,255,0.2);
+            padding: 60px;
+            text-align: center;
+            border-radius: 20px;
+            transition: 0.5s;
+        }
+
+        .alliance-box:hover {
+            border-color: var(--main-cyan);
+            background: rgba(0, 229, 255, 0.05);
+        }
+
+        /* ========================================================
+           COUNCIL GATES
+           ======================================================== 
+        */
+        .council-card {
+            background: var(--card-overlay);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 60px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .council-card:hover {
+            border-bottom: 5px solid var(--main-cyan);
+            transform: translateY(-15px);
+            background: rgba(0, 229, 255, 0.02);
+        }
+
+        /* ========================================================
+           RATINGS: NETWORK INTEGRITY (MOVED TO BOTTOM)
+           ======================================================== 
+        */
+        .integrity-container {
+            background: var(--card-overlay);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 70px 60px;
+            border-radius: 20px;
+            height: 100%;
+            backdrop-filter: blur(20px);
+        }
+
+        .rating-entry {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .user-identity {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .user-avatar-hex {
+            width: 60px; height: 60px;
+            background: #000;
+            border: 2px solid var(--main-cyan);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron';
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--main-cyan);
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+        }
+
+        .user-name-tag {
+            font-weight: 700;
+            letter-spacing: 3px;
+            font-size: 1.3rem;
+            color: #fff;
+        }
+
+        .star-rating-block {
+            color: #ffcc00;
+            font-size: 1.5rem;
+            letter-spacing: 6px;
+            text-shadow: 0 0 15px rgba(255, 204, 0, 0.5);
+        }
+
+        /* ========================================================
+           SMART TERMINAL INTERFACE (GENESIS OS)
            ======================================================== 
         */
         #genesis-terminal-root {
             position: fixed;
-            bottom: 130px; right: 50px;
-            width: 500px; height: 650px;
+            bottom: 140px; right: 50px;
+            width: 600px; height: 750px;
             background: rgba(2, 2, 10, 0.99);
             border: 2px solid var(--main-cyan);
             display: none;
             flex-direction: column;
             z-index: 20000;
-            border-radius: 12px;
-            box-shadow: 0 40px 100px #000;
-            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            box-shadow: 0 50px 150px #000;
+            backdrop-filter: blur(30px);
+            border-bottom: 8px solid var(--main-cyan);
         }
 
         .terminal-top-bar {
             background: var(--main-cyan);
             color: #000;
-            padding: 12px 25px;
+            padding: 15px 30px;
             font-family: 'Orbitron';
             font-weight: 900;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            letter-spacing: 2px;
         }
 
         .terminal-scroll-area {
             flex-grow: 1;
-            padding: 30px;
+            padding: 40px;
             overflow-y: auto;
             font-family: var(--font-mono);
-            font-size: 0.85rem;
+            font-size: 0.95rem;
             color: var(--main-cyan);
-            line-height: 1.8;
+            line-height: 2;
         }
 
         .terminal-input-row {
-            padding: 25px;
+            padding: 30px;
             background: rgba(255,255,255,0.02);
             display: flex;
             border-top: 1px solid rgba(255,255,255,0.1);
@@ -441,28 +589,45 @@
             color: #fff;
             width: 100%;
             font-family: var(--font-mono);
+            font-size: 1.1rem;
+            padding-left: 15px;
         }
 
-        .floating-nexus-orb {
+        /* 3D JARVIS ORB (REPLACES OLD BUTTON) */
+        .jarvis-orb-container {
             position: fixed;
-            bottom: 40px; right: 40px;
-            width: 80px; height: 80px;
+            bottom: 50px; right: 50px;
+            width: 90px; height: 90px;
+            z-index: 20001;
+            cursor: pointer;
             border-radius: 50%;
-            background: #000;
-            border: 3px solid var(--main-cyan);
+            background: radial-gradient(circle at 30% 30%, #ffffff, var(--main-cyan) 60%, #000 100%);
+            box-shadow: 0 0 30px var(--main-cyan), inset 0 0 20px rgba(255,255,255,0.8);
+            animation: orb_pulse_core 3s infinite ease-in-out;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            z-index: 20001;
-            font-size: 2rem;
-            box-shadow: 0 0 30px var(--main-cyan);
+        }
+
+        .jarvis-orb-container::after {
+            content: 'AI';
+            font-family: 'Orbitron';
+            font-weight: 900;
+            font-size: 1.5rem;
+            color: #fff;
+            text-shadow: 0 0 10px #000;
+        }
+
+        .jarvis-orb-container:hover {
+            transform: scale(1.1);
+            filter: brightness(1.5);
+            box-shadow: 0 0 60px var(--main-cyan), inset 0 0 30px #fff;
         }
 
         .theme-toggle-orb {
             position: fixed;
-            bottom: 40px; left: 40px;
-            width: 80px; height: 80px;
+            bottom: 50px; left: 50px;
+            width: 70px; height: 70px;
             border-radius: 50%;
             background: #000;
             border: 3px solid var(--accent-purple);
@@ -479,9 +644,9 @@
            SCROLLBAR SPECIFICATION
            ======================================================== 
         */
-        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar { width: 14px; }
         ::-webkit-scrollbar-track { background: #000; }
-        ::-webkit-scrollbar-thumb { background: var(--main-cyan); border-radius: 6px; border: 3px solid #000; }
+        ::-webkit-scrollbar-thumb { background: var(--main-cyan); border-radius: 7px; border: 3px solid #000; }
 
     </style>
 </head>
@@ -495,10 +660,11 @@
         <div class="container d-flex justify-content-between align-items-center">
             <a href="#" class="nexus-brand">NORDEN-<span>MC</span></a>
             <div class="nexus-nav-links d-none d-lg-flex">
-                <a href="#integrity" class="nexus-link">Integrity</a>
-                <a href="#depot" class="nexus-link">Depot</a>
-                <a href="#ranks" class="nexus-link">Ranks</a>
+                <a href="#rules" class="nexus-link">Directives</a>
+                <a href="#vote" class="nexus-link">Vote Portals</a>
+                <a href="#depot" class="nexus-link">Supply Depot</a>
                 <a href="#council" class="nexus-link">Council</a>
+                <a href="#integrity" class="nexus-link">Ratings</a>
             </div>
         </div>
     </nav>
@@ -507,115 +673,76 @@
         <h1 class="hero-title-main">Norden-<span>Mc</span></h1>
         <div class="server-status-pill">
             <div class="status-dot"></div>
-            <span id="player-count-display">SYNCING CORE NODES...</span>
+            <span id="player-count-display">ESTABLISHING NEURAL LINK TO SERVER...</span>
         </div>
         <div class="ip-gate" onclick="copyNetworkIP()">
             PLAY.NORDENMC.FUN
         </div>
-        <div class="mt-5 d-flex gap-4">
-            <a href="https://discord.gg/9sdyAeb7MV" target="_blank" class="action-button-nexus px-5" style="width: auto;">Discord</a>
-            <a href="https://www.instagram.com/itadori_teacher001/" target="_blank" class="action-button-nexus px-5" style="width: auto; background: #E1306C; color: #fff;">Instagram</a>
+        <div class="mt-5 d-flex gap-5">
+            <a href="https://discord.gg/9sdyAeb7MV" target="_blank" class="action-button-nexus px-5" style="width: auto; padding: 15px 40px;">Discord</a>
+            <a href="https://www.instagram.com/itadori_teacher001/" target="_blank" class="action-button-nexus px-5" style="width: auto; padding: 15px 40px; background: linear-gradient(90deg, #E1306C, #F77737);">Instagram</a>
         </div>
     </section>
 
-    <section class="container py-5" id="integrity">
-        <h2 class="section-header-nexus">NETWORK INTEGRITY</h2>
+    <section class="container py-5" id="rules">
+        <h2 class="section-header-nexus">SYSTEM DIRECTIVES</h2>
         <div class="row g-5">
-            
-            <div class="col-lg-6">
-                <div class="integrity-container">
-                    <h3 style="font-family: 'Orbitron'; color: var(--main-cyan); margin-bottom: 40px;">// WEB INTERFACE FEEDBACK</h3>
-                    
-                    <div class="rating-entry">
-                        <div class="user-identity">
-                            <div class="user-avatar-hex">U</div>
-                            <div class="user-name-tag">Utkarsh Pandey</div>
-                        </div>
-                        <div class="star-rating-block">★★★★★</div>
-                    </div>
-
-                    <div class="rating-entry">
-                        <div class="user-identity">
-                            <div class="user-avatar-hex">A</div>
-                            <div class="user-name-tag">Aayush_Owner</div>
-                        </div>
-                        <div class="star-rating-block">★★★★★</div>
-                    </div>
-
-                    <div class="rating-entry">
-                        <div class="user-identity">
-                            <div class="user-avatar-hex">H</div>
-                            <div class="user-name-tag">Hydra_Developer</div>
-                        </div>
-                        <div class="star-rating-block">★★★★☆</div>
-                    </div>
-
-                    <div class="rating-entry">
-                        <div class="user-identity">
-                            <div class="user-avatar-hex">P</div>
-                            <div class="user-name-tag">PVP_Warlord</div>
-                        </div>
-                        <div class="star-rating-block">★★★★★</div>
-                    </div>
-
-                    <div class="rating-entry">
-                        <div class="user-identity">
-                            <div class="user-avatar-hex">S</div>
-                            <div class="user-name-tag">Site_Architect</div>
-                        </div>
-                        <div class="star-rating-block">★★★★★</div>
-                    </div>
-
+            <div class="col-md-4">
+                <div class="directive-card">
+                    <div class="directive-num">01</div>
+                    <div class="directive-title">NO EXPLOITS</div>
+                    <div class="directive-desc">Modifications, x-ray architectures, and combat-altering scripts will result in immediate neural banishment from the Norden network. Play fair.</div>
                 </div>
             </div>
-
-            <div class="col-lg-6">
-                <div class="integrity-container" style="border-color: var(--accent-purple);">
-                    <h3 style="font-family: 'Orbitron'; color: var(--accent-purple); margin-bottom: 40px;">// SERVER PERFORMANCE LOGS</h3>
-                    
-                    <div class="rating-entry">
-                        <div class="user-identity">
-                            <div class="user-avatar-hex" style="border-color: var(--accent-purple); color: var(--accent-purple);">D</div>
-                            <div class="user-name-tag">Dark_Spectre</div>
-                        </div>
-                        <div class="star-rating-block" style="color: var(--accent-purple);">★★★★★</div>
-                    </div>
-
-                    <div class="rating-entry">
-                        <div class="user-identity">
-                            <div class="user-avatar-hex" style="border-color: var(--accent-purple); color: var(--accent-purple);">L</div>
-                            <div class="user-name-tag">Legend_X</div>
-                        </div>
-                        <div class="star-rating-block" style="color: var(--accent-purple);">★★★★★</div>
-                    </div>
-
-                    <div class="rating-entry">
-                        <div class="user-identity">
-                            <div class="user-avatar-hex" style="border-color: var(--accent-purple); color: var(--accent-purple);">V</div>
-                            <div class="user-name-tag">Void_Walker</div>
-                        </div>
-                        <div class="star-rating-block" style="color: var(--accent-purple);">★★★★★</div>
-                    </div>
-
-                    <div class="rating-entry">
-                        <div class="user-identity">
-                            <div class="user-avatar-hex" style="border-color: var(--accent-purple); color: var(--accent-purple);">M</div>
-                            <div class="user-name-tag">Matrix_User</div>
-                        </div>
-                        <div class="star-rating-block" style="color: var(--accent-purple);">★★★★☆</div>
-                    </div>
-
+            <div class="col-md-4">
+                <div class="directive-card">
+                    <div class="directive-num">02</div>
+                    <div class="directive-title">COUNCIL RESPECT</div>
+                    <div class="directive-desc">The Council and System Architects maintain order. Disrespect, extreme toxicity, or disruption of the network peace will not be tolerated.</div>
                 </div>
             </div>
+            <div class="col-md-4">
+                <div class="directive-card">
+                    <div class="directive-num">03</div>
+                    <div class="directive-title">EMBRACE THE GRIND</div>
+                    <div class="directive-desc">Wealth and power are earned in the Nexus. Form alliances, dominate the economy, and rise through the ranks to claim the Emperor throne.</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
+    <section class="container py-5" id="vote">
+        <h2 class="section-header-nexus">VOTE HUBS</h2>
+        <div class="row g-5">
+            <div class="col-md-4">
+                <div class="vote-card">
+                    <h3 style="font-family: 'Orbitron'; font-weight: 900;">NODE ALPHA</h3>
+                    <p class="opacity-50 mt-3 mb-5">Minecraft-MP Directory</p>
+                    <button class="action-button-nexus" onclick="window.open('https://minecraft-mp.com/server/355309/vote/')">ACCESS</button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="vote-card">
+                    <h3 style="font-family: 'Orbitron'; font-weight: 900;">NODE BETA</h3>
+                    <p class="opacity-50 mt-3 mb-5">Server-List Global</p>
+                    <button class="action-button-nexus" onclick="window.open('https://minecraft-server-list.com/server/518471/vote/')">ACCESS</button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="vote-card">
+                    <h3 style="font-family: 'Orbitron'; font-weight: 900;">NODE GAMMA</h3>
+                    <p class="opacity-50 mt-3 mb-5">TopG Registry System</p>
+                    <button class="action-button-nexus" onclick="window.open('https://topg.org/minecraft-servers/server-680059-changeme#vote')">ACCESS</button>
+                </div>
+            </div>
         </div>
     </section>
 
     <section class="container py-5" id="depot">
         <h2 class="section-header-nexus">SUPPLY DEPOT</h2>
-        <p class="text-center mb-5" style="letter-spacing: 10px; font-family: 'Orbitron'; color: var(--main-cyan);">// CRATE KEY ENCRYPTION (45% OFF) //</p>
+        <p class="text-center mb-5" style="letter-spacing: 12px; font-family: 'Orbitron'; color: var(--main-cyan); font-size: 1.2rem;">// CRATE KEY ENCRYPTION (45% OFF) //</p>
         
-        <div class="row g-4">
+        <div class="row g-5">
             <div class="col-lg-2 col-md-4 col-6">
                 <div class="depot-card">
                     <div class="promo-tag">SALE</div>
@@ -679,12 +806,12 @@
     </section>
 
     <section class="container py-5" id="ranks">
-        <h2 class="section-header-nexus">RANK ELEVATION</h2>
+        <p class="text-center mb-5" style="letter-spacing: 12px; font-family: 'Orbitron'; color: var(--main-cyan); font-size: 1.2rem; margin-top: 50px;">// RANK ELEVATION PACKAGES //</p>
         
-        <div class="row g-4">
+        <div class="row g-5">
             <div class="col-lg-4">
                 <div class="depot-card">
-                    <h3 style="font-family: 'Orbitron'; font-weight: 900;">KNIGHT</h3>
+                    <h3 style="font-family: 'Orbitron'; font-weight: 900; font-size: 2rem;">KNIGHT</h3>
                     <div class="price-display-core">
                         <span class="old-strike">₹180</span>
                         <span class="new-price-bold">99<small>INR</small></span>
@@ -695,7 +822,7 @@
 
             <div class="col-lg-4">
                 <div class="depot-card">
-                    <h3 style="font-family: 'Orbitron'; font-weight: 900;">LORD</h3>
+                    <h3 style="font-family: 'Orbitron'; font-weight: 900; font-size: 2rem;">LORD</h3>
                     <div class="price-display-core">
                         <span class="old-strike">₹453</span>
                         <span class="new-price-bold">249<small>INR</small></span>
@@ -706,7 +833,7 @@
 
             <div class="col-lg-4">
                 <div class="depot-card">
-                    <h3 style="font-family: 'Orbitron'; font-weight: 900;">PALADIN</h3>
+                    <h3 style="font-family: 'Orbitron'; font-weight: 900; font-size: 2rem;">PALADIN</h3>
                     <div class="price-display-core">
                         <span class="old-strike">₹907</span>
                         <span class="new-price-bold">499<small>INR</small></span>
@@ -717,7 +844,7 @@
 
             <div class="col-lg-6">
                 <div class="depot-card">
-                    <h3 style="font-family: 'Orbitron'; font-weight: 900;">DUKE</h3>
+                    <h3 style="font-family: 'Orbitron'; font-weight: 900; font-size: 2.5rem;">DUKE</h3>
                     <div class="price-display-core">
                         <span class="old-strike">₹1,362</span>
                         <span class="new-price-bold">749<small>INR</small></span>
@@ -727,56 +854,214 @@
             </div>
 
             <div class="col-lg-6">
-                <div class="depot-card" style="border-color: var(--accent-purple);">
-                    <h3 style="font-family: 'Orbitron'; font-weight: 900; color: var(--accent-purple);">KING</h3>
+                <div class="depot-card" style="border-color: var(--accent-purple); box-shadow: inset 0 0 50px rgba(176, 38, 255, 0.1);">
+                    <h3 style="font-family: 'Orbitron'; font-weight: 900; color: var(--accent-purple); font-size: 2.5rem; text-shadow: 0 0 20px var(--accent-purple);">KING</h3>
                     <div class="price-display-core">
                         <span class="old-strike">₹1,816</span>
                         <span class="new-price-bold" style="color: var(--accent-purple);">999<small>INR</small></span>
                     </div>
-                    <button class="action-button-nexus" style="background: var(--accent-purple);" onclick="triggerPurchaseGate()">Initialize</button>
+                    <button class="action-button-nexus" style="background: linear-gradient(90deg, var(--accent-purple), #fff, var(--accent-purple));" onclick="triggerPurchaseGate()">Claim Throne</button>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="container py-5 mb-5" id="council">
+    <section class="container py-5" id="bundles">
+        <p class="text-center mb-5" style="letter-spacing: 12px; font-family: 'Orbitron'; color: var(--accent-purple); font-size: 1.2rem; margin-top: 50px;">// SYSTEM COMPILATION BUNDLES //</p>
+        
+        <div class="row g-5">
+            <div class="col-lg-4">
+                <div class="depot-card">
+                    <h3 style="font-family: 'Orbitron'; font-weight: 900; font-size: 1.5rem;">KNIGHT BUNDLE</h3>
+                    <ul class="list-unstyled mt-4 mb-4 text-start ms-4 opacity-75" style="font-family: 'Rajdhani'; font-size: 1.2rem;">
+                        <li class="mb-2"><span style="color:var(--main-cyan)">></span> 10x Common Keys</li>
+                        <li class="mb-2"><span style="color:var(--main-cyan)">></span> Permanent Knight Rank</li>
+                        <li class="mb-2"><span style="color:var(--main-cyan)">></span> Special Chat Prefix</li>
+                    </ul>
+                    <div class="new-price-bold mt-auto">150<small>INR</small></div>
+                    <button class="action-button-nexus" onclick="triggerPurchaseGate()">Acquire</button>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="depot-card">
+                    <h3 style="font-family: 'Orbitron'; font-weight: 900; font-size: 1.5rem;">PALADIN BUNDLE</h3>
+                    <ul class="list-unstyled mt-4 mb-4 text-start ms-4 opacity-75" style="font-family: 'Rajdhani'; font-size: 1.2rem;">
+                        <li class="mb-2"><span style="color:var(--main-cyan)">></span> 10x Special Keys</li>
+                        <li class="mb-2"><span style="color:var(--main-cyan)">></span> Permanent Paladin Rank</li>
+                        <li class="mb-2"><span style="color:var(--main-cyan)">></span> Priority Join Access</li>
+                    </ul>
+                    <div class="new-price-bold mt-auto">850<small>INR</small></div>
+                    <button class="action-button-nexus" onclick="triggerPurchaseGate()">Acquire</button>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="depot-card" style="border-color: var(--accent-purple);">
+                    <h3 style="font-family: 'Orbitron'; font-weight: 900; font-size: 1.5rem; color: var(--accent-purple);">ROYAL BUNDLE</h3>
+                    <ul class="list-unstyled mt-4 mb-4 text-start ms-4 opacity-75" style="font-family: 'Rajdhani'; font-size: 1.2rem;">
+                        <li class="mb-2"><span style="color:var(--accent-purple)">></span> 10x Superior Keys</li>
+                        <li class="mb-2"><span style="color:var(--accent-purple)">></span> Permanent King Rank</li>
+                        <li class="mb-2"><span style="color:var(--accent-purple)">></span> Global Server Boosters</li>
+                    </ul>
+                    <div class="new-price-bold mt-auto" style="color: var(--accent-purple);">1,500<small>INR</small></div>
+                    <button class="action-button-nexus" style="background: linear-gradient(90deg, var(--accent-purple), #fff, var(--accent-purple));" onclick="triggerPurchaseGate()">Acquire</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container py-5" id="alliances">
+        <h2 class="section-header-nexus">GLOBAL ALLIANCES</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="alliance-box">
+                    <h3 style="font-family: 'Syncopate'; letter-spacing: 5px; color: var(--main-cyan);">TEAM GLACIERZ</h3>
+                    <p class="mt-4" style="font-size: 1.2rem; opacity: 0.8; line-height: 1.8;">
+                        Mutual Cooperation & Peace Accord Established.<br>
+                        Norden-Mc proudly stands in alliance with the elite forces of Team GlacierZ. 
+                        Together, we forge a stronger network for all operatives.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container py-5" id="council">
         <h2 class="section-header-nexus">THE COUNCIL</h2>
-        <div class="row g-4 text-center">
+        <div class="row g-5 text-center">
             <div class="col-md-3">
-                <div class="depot-card">
-                    <h4 style="font-family: 'Orbitron';">Aayush</h4>
-                    <p class="mt-3" style="color: var(--main-cyan); letter-spacing: 5px;">FOUNDER</p>
+                <div class="council-card">
+                    <div style="font-size: 3rem; margin-bottom: 20px;">👤</div>
+                    <h3 style="font-family: 'Orbitron'; font-weight: 900;">Aayush</h3>
+                    <p class="mt-3" style="color: var(--main-cyan); letter-spacing: 5px; font-weight: 700;">FOUNDER</p>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="depot-card">
-                    <h4 style="font-family: 'Orbitron';">Hydra</h4>
-                    <p class="mt-3" style="color: var(--main-cyan); letter-spacing: 5px;">ARCHITECT</p>
+                <div class="council-card">
+                    <div style="font-size: 3rem; margin-bottom: 20px;">👤</div>
+                    <h3 style="font-family: 'Orbitron'; font-weight: 900;">Hydra</h3>
+                    <p class="mt-3" style="color: var(--main-cyan); letter-spacing: 5px; font-weight: 700;">ARCHITECT</p>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="depot-card">
-                    <h4 style="font-family: 'Orbitron';">PVP_PRO</h4>
-                    <div class="mt-3" style="color: var(--main-cyan); letter-spacing: 5px;">GENERAL</div>
+                <div class="council-card">
+                    <div style="font-size: 3rem; margin-bottom: 20px;">👤</div>
+                    <h3 style="font-family: 'Orbitron'; font-weight: 900;">PVP_PRO</h3>
+                    <p class="mt-3" style="color: var(--main-cyan); letter-spacing: 5px; font-weight: 700;">GENERAL</p>
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="depot-card">
-                    <h4 style="font-family: 'Orbitron';">Sitesizer</h4>
-                    <div class="mt-3" style="color: var(--main-cyan); letter-spacing: 5px;">ADMIN</div>
+                <div class="council-card">
+                    <div style="font-size: 3rem; margin-bottom: 20px;">👤</div>
+                    <h3 style="font-family: 'Orbitron'; font-weight: 900;">Sitesizer</h3>
+                    <p class="mt-3" style="color: var(--main-cyan); letter-spacing: 5px; font-weight: 700;">ADMIN</p>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <section class="container py-5 mb-5" id="integrity">
+        <h2 class="section-header-nexus">NETWORK INTEGRITY</h2>
+        <div class="row g-5">
+            
+            <div class="col-lg-6">
+                <div class="integrity-container">
+                    <h3 style="font-family: 'Orbitron'; color: var(--main-cyan); margin-bottom: 50px; font-weight: 900;">// WEB INTERFACE FEEDBACK</h3>
+                    
+                    <div class="rating-entry">
+                        <div class="user-identity">
+                            <div class="user-avatar-hex">U</div>
+                            <div class="user-name-tag">Utkarsh Pandey</div>
+                        </div>
+                        <div class="star-rating-block">★★★★★</div>
+                    </div>
+
+                    <div class="rating-entry">
+                        <div class="user-identity">
+                            <div class="user-avatar-hex">A</div>
+                            <div class="user-name-tag">Aayush_Owner</div>
+                        </div>
+                        <div class="star-rating-block">★★★★★</div>
+                    </div>
+
+                    <div class="rating-entry">
+                        <div class="user-identity">
+                            <div class="user-avatar-hex">H</div>
+                            <div class="user-name-tag">Hydra_Developer</div>
+                        </div>
+                        <div class="star-rating-block">★★★★☆</div>
+                    </div>
+
+                    <div class="rating-entry">
+                        <div class="user-identity">
+                            <div class="user-avatar-hex">P</div>
+                            <div class="user-name-tag">PVP_Warlord</div>
+                        </div>
+                        <div class="star-rating-block">★★★★★</div>
+                    </div>
+
+                    <div class="rating-entry" style="border-bottom: none;">
+                        <div class="user-identity">
+                            <div class="user-avatar-hex">S</div>
+                            <div class="user-name-tag">Site_Architect</div>
+                        </div>
+                        <div class="star-rating-block">★★★★★</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="integrity-container" style="border-color: var(--accent-purple);">
+                    <h3 style="font-family: 'Orbitron'; color: var(--accent-purple); margin-bottom: 50px; font-weight: 900;">// SERVER PERFORMANCE LOGS</h3>
+                    
+                    <div class="rating-entry">
+                        <div class="user-identity">
+                            <div class="user-avatar-hex" style="border-color: var(--accent-purple); color: var(--accent-purple);">D</div>
+                            <div class="user-name-tag">Dark_Spectre</div>
+                        </div>
+                        <div class="star-rating-block" style="color: var(--accent-purple);">★★★★★</div>
+                    </div>
+
+                    <div class="rating-entry">
+                        <div class="user-identity">
+                            <div class="user-avatar-hex" style="border-color: var(--accent-purple); color: var(--accent-purple);">L</div>
+                            <div class="user-name-tag">Legend_X</div>
+                        </div>
+                        <div class="star-rating-block" style="color: var(--accent-purple);">★★★★★</div>
+                    </div>
+
+                    <div class="rating-entry">
+                        <div class="user-identity">
+                            <div class="user-avatar-hex" style="border-color: var(--accent-purple); color: var(--accent-purple);">V</div>
+                            <div class="user-name-tag">Void_Walker</div>
+                        </div>
+                        <div class="star-rating-block" style="color: var(--accent-purple);">★★★★★</div>
+                    </div>
+
+                    <div class="rating-entry" style="border-bottom: none;">
+                        <div class="user-identity">
+                            <div class="user-avatar-hex" style="border-color: var(--accent-purple); color: var(--accent-purple);">M</div>
+                            <div class="user-name-tag">Matrix_User</div>
+                        </div>
+                        <div class="star-rating-block" style="color: var(--accent-purple);">★★★★☆</div>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
     </section>
 
     <div class="modal fade" id="purchaseGatewayModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" style="background:#000; border:2px solid var(--main-cyan); color:#fff; border-radius:0;">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content" style="background:#000; border:3px solid var(--main-cyan); color:#fff; border-radius:0; box-shadow: 0 0 50px rgba(0,229,255,0.3);">
                 <div class="modal-body p-5 text-center">
-                    <h2 class="mb-5" style="font-family: 'Syncopate';">SELECT CHANNEL</h2>
+                    <h2 class="mb-5" style="font-family: 'Syncopate'; font-size: 3rem; letter-spacing: 10px; color: var(--main-cyan);">SELECT CHANNEL</h2>
                     <div class="d-grid gap-4">
                         <button class="action-button-nexus" onclick="window.open('https://demonsmp.craftingstore.net/')">AUTOMATED WEBSTORE</button>
-                        <button class="action-button-nexus" style="background:#5865F2; color:#fff;" onclick="window.open('https://discord.gg/dyAG4CS5bz')">DISCORD GATEWAY (UPI)</button>
+                        <button class="action-button-nexus" style="background: linear-gradient(90deg, #5865F2, #fff, #5865F2); color:#000;" onclick="window.open('https://discord.gg/dyAG4CS5bz')">DISCORD GATEWAY (UPI)</button>
                     </div>
                 </div>
             </div>
@@ -785,26 +1070,27 @@
 
     <div id="genesis-terminal-root">
         <div class="terminal-top-bar">
-            <span>GENESIS_OS // VERSION_9.0.4</span>
-            <span onclick="toggleGenesisTerminal()" style="cursor:pointer">[X]</span>
+            <span>GENESIS_OS // ASTRA-OMNI_PROTOCOL_V.9</span>
+            <span onclick="toggleGenesisTerminal()" style="cursor:pointer; font-size: 1.2rem;">[ X ]</span>
         </div>
         <div class="terminal-scroll-area" id="terminal-log-stream">
             </div>
         <div class="terminal-input-row">
-            <span class="me-3">SYSTEM_ROOT#</span>
-            <input type="text" id="terminal-command-input" placeholder="Execute directive..." autocomplete="off">
+            <span class="me-3" style="font-weight: 900;">ADMIN_OVERRIDE ></span>
+            <input type="text" id="terminal-command-input" placeholder="Initiate conversation or command..." autocomplete="off">
         </div>
     </div>
 
-    <div class="floating-nexus-orb" id="terminal-orb" onclick="toggleGenesisTerminal()">🛸</div>
-    <div class="theme-toggle-orb" id="theme-orb" onclick="switchSystemTheme()">🌌</div>
+    <div class="jarvis-orb-container" id="terminal-orb" onclick="toggleGenesisTerminal()" title="Access AI Terminal"></div>
+    
+    <div class="theme-toggle-orb" id="theme-orb" onclick="switchSystemTheme()" title="Switch Network Theme">🌌</div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
         /**
          * ========================================================
-         * CORE GENESIS ENGINE SCRIPTING
+         * CORE GENESIS ENGINE SCRIPTING (ASTRA-OMNI AI)
          * ========================================================
          */
         
@@ -813,20 +1099,16 @@
         const cmdInput = document.getElementById('terminal-command-input');
         const terminalRoot = document.getElementById('genesis-terminal-root');
         
-        // 1. NEURAL BOOT SEQUENCE (EXPANDED LOGS)
+        // 1. NEURAL BOOT SEQUENCE
         function runBootSequence() {
             const bootLogs = [
                 "> INITIALIZING GENESIS CORE...",
-                "> LOADING NEURAL NETWORK ARCHITECTURE...",
-                "> ESTABLISHING CONNECTION TO play.nordenmc.fun",
-                "> HANDSHAKE PROTOCOL: SUCCESS",
+                "> LOADING ASTRA-OMNI NEURAL NETWORK...",
+                "> CONNECTING TO NORDEN-MC MAIN FRAME...",
                 "> ENCRYPTING DATABASE NODES...",
-                "> SCANNING FOR SYSTEM OWNER: UTKARSH PANDEY...",
-                "> OWNER RECOGNIZED. ACCESS GRANTED.",
-                "> LOADING DEPOT MODULES...",
-                "> SYNCING PLAYER DATA WITH MOJANG API...",
-                "> SECURITY LEVEL 9: ACTIVE",
-                "> READY FOR DIRECTIVES."
+                "> SYSTEM ARCHITECT RECOGNIZED: UTKARSH PANDEY",
+                "> WELCOME BACK, CREATOR.",
+                "> AI ENGINE READY. HOW CAN I ASSIST YOU?"
             ];
 
             bootLogs.forEach((msg, i) => {
@@ -835,7 +1117,7 @@
                     line.innerText = msg;
                     logStream.appendChild(line);
                     logStream.scrollTop = logStream.scrollHeight;
-                }, i * 150);
+                }, i * 300);
             });
         }
         runBootSequence();
@@ -850,16 +1132,16 @@
                 if(data.online) {
                     display.innerHTML = `<div class="status-dot"></div> ${data.players.online} / ${data.players.max} OPERATIVES ACTIVE`;
                 } else {
-                    display.innerHTML = `<div class="status-dot" style="background:#ff3e3e; box-shadow:0 0 15px #ff3e3e;"></div> NETWORK OFFLINE`;
+                    display.innerHTML = `<div class="status-dot" style="background:#ff3e3e; box-shadow:0 0 20px #ff3e3e;"></div> NETWORK OFFLINE`;
                 }
             } catch (err) {
                 display.innerText = "LINKAGE ERROR";
             }
         }
         refreshServerStatus();
-        setInterval(refreshServerStatus, 45000);
+        setInterval(refreshServerStatus, 30000);
 
-        // 3. TERMINAL LOGIC
+        // 3. ASTRA-OMNI AI ENGINE (SMART TERMINAL LOGIC)
         function toggleGenesisTerminal() {
             const isVisible = terminalRoot.style.display === 'flex';
             terminalRoot.style.display = isVisible ? 'none' : 'flex';
@@ -871,20 +1153,50 @@
                 const val = cmdInput.value.trim().toLowerCase();
                 const output = document.createElement('div');
                 output.style.color = "#fff";
-                output.innerText = `>> ${val.toUpperCase()}`;
+                output.innerText = `\n>> ${val.toUpperCase()}`;
                 logStream.appendChild(output);
 
                 const response = document.createElement('div');
-                if(val === 'help') {
-                    response.innerText = "> AVAILABLE DIRECTIVES: IP, STATUS, SHOP, CLEAR, REBOOT";
-                } else if(val === 'ip') {
-                    response.innerText = `> TARGET NODE: ${NETWORK_IP}`;
-                } else if(val === 'clear') {
+                
+                // COGNITIVE PROCESSING (REGEX ENGINE)
+                if(val.match(/hi|hello|hey|yo|greetings/)) {
+                    response.innerText = "> [AI] GREETINGS. I AM ASTRA-OMNI, THE NEURAL ENGINE BEHIND NORDEN-MC. HOW CAN I ASSIST YOU TODAY?";
+                } 
+                else if(val.match(/how are you|how do you do/)) {
+                    response.innerText = "> [AI] MY SERVERS ARE OPERATING AT OPTIMAL TEMPERATURE. THANK YOU FOR INQUIRING.";
+                }
+                else if(val.match(/owner|admin|creator|architect|who made this|who are the owners/)) {
+                    response.innerText = "> [AI] THE SYSTEM IS GOVERNED BY THE COUNCIL: AAYUSH, HYDRA, PVP_PRO, AND SITESIZER. THE ARCHITECTURE WAS BUILT BY UTKARSH PANDEY.";
+                }
+                else if(val.match(/what is this server|about|info|details/)) {
+                    response.innerText = "> [AI] NORDEN-MC IS A HIGH-PERFORMANCE MINECRAFT NODE. FEATURING ADVANCED COMBAT, ECONOMY, AND ELITE RANK ARCHITECTURE. IP: PLAY.NORDENMC.FUN";
+                }
+                else if(val.match(/discord|community|chat/)) {
+                    response.innerText = "> [AI] JOIN THE ALLIANCE ON DISCORD: https://discord.gg/9sdyAeb7MV";
+                }
+                else if(val.match(/shop|store|buy|purchase|ranks/)) {
+                    response.innerText = "> [AI] ACCESSING SUPPLY DEPOT... SCROLL DOWN OR NAVIGATE TO #DEPOT TO ACQUIRE CRATE KEYS AND RANK ELEVATIONS.";
+                }
+                else if(val.match(/rules|directives|bans|banned/)) {
+                    response.innerText = "> [AI] DIRECTIVE 01: NO HACKING. DIRECTIVE 02: RESPECT THE COUNCIL. DIRECTIVE 03: EMBRACE THE GRIND. BREAKING DIRECTIVES RESULTS IN BANISHMENT.";
+                }
+                else if(val.match(/glacierz|alliance|team/)) {
+                    response.innerText = "> [AI] COOPERATIVE PROTOCOL DETECTED: TEAM GLACIERZ IS A RECOGNIZED ALLIANCE OF NORDEN-MC.";
+                }
+                else if(val.match(/gojo|anime|domain expansion/)) {
+                    response.innerText = "> [AI] WARNING: LIMITLESS CURSED ENERGY DETECTED... \"THROUGHOUT HEAVEN AND EARTH, I ALONE AM THE HONORED ONE.\"";
+                }
+                else if(val === 'ip') {
+                    response.innerText = `> [AI] TARGET NODE ESTABLISHED: ${NETWORK_IP}`;
+                } 
+                else if(val === 'clear') {
                     logStream.innerHTML = "";
-                } else if(val === 'status') {
-                    response.innerText = "> SYSTEM INTEGRITY: 99.9% | UPTIME: 2478 HOURS";
-                } else {
-                    response.innerText = "> UNKNOWN DIRECTIVE. TYPE 'HELP' FOR GUIDANCE.";
+                } 
+                else if(val === 'status') {
+                    response.innerText = "> [AI] SYSTEM INTEGRITY: 100% | UPTIME: 2478 HOURS | NODE HEALTH: EXCELLENT";
+                } 
+                else {
+                    response.innerText = "> [AI] DIRECTIVE UNRECOGNIZED. MY CONVERSATION MATRIX ONLY PROCESSES QUESTIONS ABOUT THE SERVER, OWNERS, DISCORD, RULES, OR GREETINGS.";
                 }
                 
                 logStream.appendChild(response);
@@ -908,27 +1220,34 @@
                 body.className = 'space-nexus';
                 orb.innerText = '🌌';
             }
-            initCanvas(); // Redraw particles for theme color shift
+            initCanvas();
         }
 
-        // 5. CANVAS PARTICLE ENGINE (EXPANDED)
+        // 5. PARALLAX CANVAS PARTICLE ENGINE (EXPANDED)
         const canvas = document.getElementById('genesis-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
+        let mouseX = 0;
+        let mouseY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX - window.innerWidth / 2) * 0.05;
+            mouseY = (e.clientY - window.innerHeight / 2) * 0.05;
+        });
 
         function initCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             particles = [];
-            const count = (currentTheme === 'space') ? 200 : 80;
+            const count = (currentTheme === 'space') ? 250 : 100;
             
             for(let i=0; i<count; i++) {
                 particles.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    radius: Math.random() * 2.5,
-                    vx: Math.random() * 0.5 - 0.25,
-                    vy: Math.random() * 0.5 - 0.25,
+                    radius: Math.random() * 3,
+                    vx: Math.random() * 0.4 - 0.2,
+                    vy: Math.random() * 0.4 - 0.2,
                     alpha: Math.random()
                 });
             }
@@ -940,7 +1259,7 @@
             
             particles.forEach(p => {
                 ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.arc(p.x + mouseX, p.y + mouseY, p.radius, 0, Math.PI * 2);
                 ctx.fillStyle = activeColor;
                 ctx.globalAlpha = p.alpha;
                 ctx.fill();
@@ -948,8 +1267,10 @@
                 p.x += p.vx;
                 p.y += p.vy;
 
-                if(p.x < 0 || p.x > canvas.width) p.vx *= -1;
-                if(p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                if(p.x < -50) p.x = canvas.width + 50;
+                if(p.x > canvas.width + 50) p.x = -50;
+                if(p.y < -50) p.y = canvas.height + 50;
+                if(p.y > canvas.height + 50) p.y = -50;
             });
             requestAnimationFrame(animateParticles);
         }
